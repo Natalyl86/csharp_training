@@ -23,6 +23,42 @@ namespace addressbook_web_tests
             manager.Navigator.ReturnToHomePage();
             return this;
         }
+
+        public ContactHelper Modify(int c, ContactData newContactData)
+        {
+            SelectContact(c);
+            FillContactForm(newContactData);
+            SubmitContactUpdate();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+        public ContactHelper Delete (int del)
+        {
+            SelectContact(del);
+            DeleteContact();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper DeleteContact()
+        {
+            driver.FindElement(By.CssSelector("[value='Delete']")).Click();
+            return this;
+        }
+
+        private ContactHelper SubmitContactUpdate()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(int c)
+        {
+            IWebElement e = driver.FindElements(By.ClassName("center"))[c];
+            e.Click();
+            return this;
+        }
+
         public void SubmitNewContact()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[21]")).Click();
