@@ -26,6 +26,11 @@ namespace addressbook_web_tests
 
         public ContactHelper Modify(int c, ContactData newContactData)
         {
+            if (!isElementPresent(By.Name("selected[]")))
+            {
+                ContactData contact = new ContactData("Name", "Last name");
+                Create(contact);
+            }
             SelectContact(c);
             FillContactForm(newContactData);
             SubmitContactUpdate();
@@ -34,6 +39,11 @@ namespace addressbook_web_tests
         }
         public ContactHelper Delete (int del)
         {
+            if (!isElementPresent(By.Name("selected[]")))
+            {
+                ContactData contact = new ContactData("Name", "Last name");
+                Create(contact);
+            }
             SelectContact(del);
             DeleteContact();
             manager.Navigator.ReturnToHomePage();

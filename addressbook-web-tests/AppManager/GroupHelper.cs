@@ -14,7 +14,6 @@ namespace addressbook_web_tests
     {
         public GroupHelper(ApplicationManager manager) : base(manager)
         {
-            //this.driver = driver;
         }
 
         public GroupHelper Create(GroupData group)
@@ -30,6 +29,11 @@ namespace addressbook_web_tests
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GotoGroupsPage();
+            if (!isElementPresent(By.Name("selected[]")))
+            {
+                GroupData group = new GroupData("aaa", "bbb", "ccc");
+                Create(group);
+            }
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupsPage();
@@ -39,6 +43,11 @@ namespace addressbook_web_tests
         public GroupHelper Modify(int v, GroupData newData)
         {
             manager.Navigator.GotoGroupsPage();
+            if (!isElementPresent(By.Name("selected[]")))
+            {
+                GroupData group = new GroupData("aaa", "bbb", "ccc");
+                Create(group);
+            }
             SelectGroup(v);
             InitGroupModification();
             FillGroupForm(newData);
@@ -62,7 +71,7 @@ namespace addressbook_web_tests
         public GroupHelper ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("groups")).Click();
-            driver.FindElement(By.LinkText("Logout")).Click();
+            //driver.FindElement(By.LinkText("Logout")).Click();
             return this;
         }
 

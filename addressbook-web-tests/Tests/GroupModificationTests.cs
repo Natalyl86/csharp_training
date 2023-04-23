@@ -17,7 +17,7 @@ namespace addressbook_web_tests
         [Test]
         public void GroupModificationTest()
         {
-            GroupData newData = new GroupData("xxx", null, null);
+            GroupData newData = new GroupData("Modified", null, null);
             app.Groups.Modify(1, newData);
         }
     }

@@ -21,12 +21,22 @@ namespace addressbook_web_tests
         }
         public void GotoHomePage()
         {
+            if (driver.Url == baseURL)
+            {
+                return;
+            }
             driver.Navigate().GoToUrl(baseURL);
         }
 
         public void GotoGroupsPage()
         {
-            driver.FindElement(By.LinkText("groups")).Click();
+            if (driver.Url == baseURL + "/group.php"
+                && isElementPresent(By.Name("new")))
+            {
+                return;
+            }
+                driver.FindElement(By.LinkText("groups")).Click();
+            
         }
         public void GotoContactCreationPage()
         {
