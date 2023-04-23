@@ -12,14 +12,13 @@ using OpenQA.Selenium.Support.UI;
 namespace addressbook_web_tests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
-            GroupData newData = new GroupData("xxx", "zzz", "yyy");
+            GroupData newData = new GroupData("xxx", null, null);
             app.Groups.Modify(1, newData);
-
         }
     }
 }
