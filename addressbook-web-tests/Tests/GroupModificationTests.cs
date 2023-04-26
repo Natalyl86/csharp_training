@@ -17,8 +17,10 @@ namespace addressbook_web_tests
         [Test]
         public void GroupModificationTest()
         {
+            int groupIndex = 5;
+            app.Groups.EnsureRequiredNumberOfGroups(groupIndex+1);
             GroupData newData = new GroupData("Modified", null, null);
-            app.Groups.Modify(1, newData);
+            app.Groups.Modify(groupIndex, newData);
         }
     }
 }

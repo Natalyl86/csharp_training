@@ -26,11 +26,7 @@ namespace addressbook_web_tests
 
         public ContactHelper Modify(int c, ContactData newContactData)
         {
-            if (!isElementPresent(By.Name("selected[]")))
-            {
-                ContactData contact = new ContactData("Name", "Last name");
-                Create(contact);
-            }
+            manager.Navigator.GotoHomePage();
             SelectContact(c);
             FillContactForm(newContactData);
             SubmitContactUpdate();
@@ -39,14 +35,25 @@ namespace addressbook_web_tests
         }
         public ContactHelper Delete (int del)
         {
-            if (!isElementPresent(By.Name("selected[]")))
-            {
-                ContactData contact = new ContactData("Name", "Last name");
-                Create(contact);
-            }
             SelectContact(del);
             DeleteContact();
             manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper EnsureRequiredNumberOfContacts(int requiredNumber)
+        {
+            int existingNumber = driver.FindElements(By.Name("selected[]")).Count;
+            if (existingNumber < requiredNumber)
+            {
+                int recordsToCreate = requiredNumber - existingNumber;
+
+                for (int i = 0; i < recordsToCreate; i++)
+                {
+                    ContactData contact = new ContactData("Name", "Last name");
+                    Create(contact);
+                }
+            }
             return this;
         }
 
@@ -64,8 +71,7 @@ namespace addressbook_web_tests
 
         public ContactHelper SelectContact(int c)
         {
-            IWebElement e = driver.FindElements(By.ClassName("center"))[c];
-            e.Click();
+            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + (c) + "]")).Click();
             return this;
         }
 

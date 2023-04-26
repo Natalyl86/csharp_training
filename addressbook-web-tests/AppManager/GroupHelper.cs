@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Support.UI;
+using System.Reflection;
 
 namespace addressbook_web_tests
 {
@@ -29,25 +30,32 @@ namespace addressbook_web_tests
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GotoGroupsPage();
-            if (!isElementPresent(By.Name("selected[]")))
-            {
-                GroupData group = new GroupData("aaa", "bbb", "ccc");
-                Create(group);
-            }
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupsPage();
             return this;
         }
 
+        public GroupHelper EnsureRequiredNumberOfGroups(int requiredNumber)
+        {
+            manager.Navigator.GotoGroupsPage();
+            int existingNumber = driver.FindElements(By.Name("selected[]")).Count;
+            if (existingNumber < requiredNumber)
+            {
+                int recordsToCreate = requiredNumber - existingNumber;
+
+                for (int i = 0; i < recordsToCreate; i++)
+                {
+                    GroupData group = new GroupData("aaa", "bbb", "ccc");
+                    Create(group);
+                }
+            }
+            return this;
+        }
+
         public GroupHelper Modify(int v, GroupData newData)
         {
             manager.Navigator.GotoGroupsPage();
-            if (!isElementPresent(By.Name("selected[]")))
-            {
-                GroupData group = new GroupData("aaa", "bbb", "ccc");
-                Create(group);
-            }
             SelectGroup(v);
             InitGroupModification();
             FillGroupForm(newData);
@@ -101,10 +109,20 @@ namespace addressbook_web_tests
         }
         public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
 
-        
+        public List<GroupData> GetGroupsList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            manager.Navigator.GotoGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }
+            return groups;
+        }
     }
 }

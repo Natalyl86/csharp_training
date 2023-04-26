@@ -16,7 +16,9 @@ namespace addressbook_web_tests
         [Test]
         public void ContactRemovalTest()
         {
-            app.Contacts.Delete(2);
+            int contactIndex = 2;
+            app.Contacts.EnsureRequiredNumberOfContacts(contactIndex);
+            app.Contacts.Delete(contactIndex);
         }
     }
 }

@@ -16,8 +16,10 @@ namespace addressbook_web_tests
         [Test]
         public void ContactModificationTest()
         {
+            int contactIndex = 2;
+            app.Contacts.EnsureRequiredNumberOfContacts(contactIndex);
             ContactData newContactData = new ContactData("Contact", "Modified");
-            app.Contacts.Modify(2, newContactData);
+            app.Contacts.Modify(contactIndex, newContactData);
 
         }
     }
