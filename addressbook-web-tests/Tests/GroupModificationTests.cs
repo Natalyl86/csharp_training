@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -20,7 +20,15 @@ namespace addressbook_web_tests
             int groupIndex = 5;
             app.Groups.EnsureRequiredNumberOfGroups(groupIndex+1);
             GroupData newData = new GroupData("Modified", null, null);
+            List<GroupData> oldGroups = app.Groups.GetGroupsList();
             app.Groups.Modify(groupIndex, newData);
+            List<GroupData> newGroups = app.Groups.GetGroupsList();
+            oldGroups[groupIndex].Name = newData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+
+
         }
     }
 }

@@ -63,6 +63,19 @@ namespace addressbook_web_tests
             return this;
         }
 
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.GotoHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+            foreach (IWebElement element in elements)
+            {
+                IList<IWebElement> cells = element.FindElements(By.TagName("td"));
+                contacts.Add(new ContactData(cells[2].Text, cells[1].Text));
+            }
+            return contacts;
+        }
+
         private ContactHelper SubmitContactUpdate()
         {
             driver.FindElement(By.Name("update")).Click();

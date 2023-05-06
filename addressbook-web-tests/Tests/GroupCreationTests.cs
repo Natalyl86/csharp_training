@@ -20,7 +20,10 @@ namespace addressbook_web_tests
             List<GroupData> oldGroups = app.Groups.GetGroupsList();
             app.Groups.Create(group);
             List<GroupData> newGroups = app.Groups.GetGroupsList();
-            Assert.AreEqual(oldGroups.Count + 1, newGroups.Count);
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
         }
 
         [Test]
